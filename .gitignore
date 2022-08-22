@@ -1,0 +1,7 @@
+.*
+venv
+__pycache__
+*.model
+*.onnx
+!.gitignore
+test/models/pytorch/data
