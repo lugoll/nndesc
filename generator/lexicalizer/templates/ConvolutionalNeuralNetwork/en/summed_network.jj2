@@ -1,0 +1,62 @@
+The Convolutional Neural Network consists of {{ property.LayerNum }} weighted Layer, for which
+
+{% if 'only_used' in property.LayerTypeSummary %}
+    only {{ property.LayerTypeSummary.only_used }} are used.
+{% elif 'most_used' in property.LayerTypeSummary %}
+    mostly {{ property.LayerTypeSummary.most_used }}
+    {% if 'maxpool' in property.LayerTypeSummary and property.LayerTypeSummary.maxpool == 'some' %}
+        and some MaxPool Layer are used
+    {% elif 'maxpool' in property.LayerTypeSummary and property.LayerTypeSummary.maxpool == 'equal' %}
+        and the equal amount of MaxPool Layer are used
+    {% else %}
+        are used
+    {% endif %}
+    {% if 'last_used' in property.LayerTypeSummary %}
+        , while {{ property.LayerTypeSummary.last_used_count }} {{ property.LayerTypeSummary.last_used }} are used for the output
+    {% elif 'also_used' in property.LayerTypeSummary %}
+        , but also {{ property.LayerTypeSummary.also_used }} are used
+    {% endif %}
+    .
+{% endif %}
+
+{% if 'only_used' in property.KernelSummary %}
+    In all Convolutional Layers a kernel size of {{ property.KernelSummary.only_used }} gets applied to the data.
+{% elif 'several_used' in property.KernelSummary %}
+    In the Convolutional Layers several different kernel sizes like {{ property.KernelSummary.several_used }} are used.
+{% elif 'most_used' in property.KernelSummary %}
+    In the Convolutional Layers mostly {{ property.KernelSummary.most_used }} are used.
+    Furthermore {{ property.KernelSummary.also_used_count }} layers have a {{ property.KernelSummary.also_used }} kernel.
+{% endif %}
+
+{% if 'all' in property.FilterSummary %}
+    Through the whole network, the amount of output filters in the Convolutional Layers {{ property.FilterSummary.all }}{% if property.FilterSummary.all != 'are equal' %}s{% endif %}
+    {% if property.FilterSummary.all == 'are equal' %}
+        with the amount {{ property.FilterSummary.amount }} filters.
+    {% else %}
+        from {{ property.FilterSummary.from }} to {{property.FilterSummary.to }} filters.
+    {% endif %}
+{% else %}
+    Through the network the amount of output filters change as followed:
+    {% for sec, dir in property.FilterSummary.items() %}
+    In the {{ sec }} part they {{ dir }}.
+    {% endfor %}
+{% endif %}
+
+{% if property.DimensionSummary.maxpool_downsampling and not property.DimensionSummary.conv_downsampling %}
+    For downsampling only the MaxPool Layers are used.
+{% elif not property.DimensionSummary.maxpool_downsampling and property.DimensionSummary.conv_downsampling %}
+    For downsampling {{ property.DimensionSummary.conv_strides }} used in some of the Convolutional Layers.
+{% elif property.DimensionSummary.maxpool_downsampling and property.DimensionSummary.conv_downsampling %}
+    For downsampling there are the MaxPool Layers and {{ property.DimensionSummary.conv_strides }} used in some of the Convolutional Layers.
+{% endif %}
+
+{% if 'only_used' in property.ActivationSummary %}
+    Overall in the network only {{ property.ActivationSummary.only_used }} activation functions are used.
+{% elif 'several_used' in property.ActivationSummary %}
+    Overall the {{ property.ActivationSummary.several_used[:-1]|join(', ') }} and {{ property.ActivationSummary.several_used[-1] }} activation functions are used in the network.
+{% elif 'most_used' in property.ActivationSummary %}
+    Overall in the network mostly the {{ property.ActivationSummary.most_used }} activation function is used,
+    but also the {{ property.ActivationSummary.also_used }} is used {{ property.ActivationSummary.also_used_count }} times.
+{% endif %}
+
+The last layer in the network is a {{ layers[-1].type }}{% if 'activation' in layers[-1] %} with the {{ layers[-1].activation }} activation function{% endif %}.

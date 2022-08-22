@@ -1,0 +1,15 @@
+The first layer of the Convolutional Neural Network is a {{ layers[0].type }} with {{ layers[0].filter }} filters of the size {{ layers[0].kernel_shape }}{% if 'activation' in layers[0] %} and a {{ layers[0].activation }} activation function{% endif %}.
+
+{% for layer in layers[1:-1] %}
+    {% if layer.type == 'Convolutional Layer' %}
+        This layer is followed by a {{ layer.type }} with {{ layer.filter }} filters of the size {{ layer.kernel_shape }}{% if 'activation' in layer %} and a {{ layer.activation }} activation function{% endif %}.
+    {% elif layer.type == 'MaxPool Layer' %}
+        For downsampling, the previous layer is followed by a MaxPool Layer.
+    {% elif layer.type == 'Flatten Layer' %}
+        With a {{ layer.type }} the data will be brought in to a one-dimensional shape.
+    {% elif layer.type == 'Dense Layer' %}
+        This layer is followed by a {{ layer.type }}{% if 'activation' in layer %} with a {{ layer.activation }} activation function{% endif %}.
+    {% endif %}
+{% endfor %}
+
+The last layer is a {{ layers[-1].type }}{% if 'activation' in layers[-1] %} with a {{ layers[-1].activation }} activation function{% endif %}.

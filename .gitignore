@@ -5,3 +5,4 @@ __pycache__
 *.onnx
 !.gitignore
 test/models/pytorch/data
+test/models/data

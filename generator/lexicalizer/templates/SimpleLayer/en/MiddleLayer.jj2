@@ -1,0 +1,10 @@
+The {{ pos_word }} layer is a {{ layer.type }}
+{% if layer.type == 'Convolutional Layer' %}
+    with {{ layer.filter }} filters of the size {{ layer.kernel_shape }}{% if 'activation' in layer %} and a {{ layer.activation }} activation function{% endif %}.
+{% elif layer.type == 'MaxPool Layer' %}
+    for downsampling.
+{% elif layer.type == 'Dense' %}
+    with {{ layer.output }} output neurons {% if 'activation' in layer %} with a {{ layer.activation }} activation function{% endif %}.
+{% else %}
+.
+{% endif %}

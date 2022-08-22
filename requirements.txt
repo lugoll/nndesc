@@ -1,0 +1,14 @@
+tensorflow
+keras
+matplotlib
+numpy
+tf2onnx
+jupyter
+torch
+torchvision
+torchaudio
+torchsummary
+onnx
+pydantic
+torchtext
+Jinja2

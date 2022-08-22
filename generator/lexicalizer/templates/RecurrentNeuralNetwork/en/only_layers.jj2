@@ -1,0 +1,13 @@
+The first layer of the Recurrent Neural Network is a {% if 'direction' in layers[0] %}{{ layers[0].direction }} {% endif %}{{ layers[0].type }} with a hidden size of {{ layers[0].hidden_size }}.
+
+{% for layer in layers[1:-1] %}
+    {% if layer.type == 'Long Short Term Memory Cell' or layer.type == 'Gated Recurrent Unit Cell' %}
+        This layer is followed by a {% if 'direction' in layer %}{{ layer.direction }} {% endif %}{{ layer.type }} with a hidden size of {{ layer.hidden_size }}.
+    {% elif layer.type == 'Flatten Layer' %}
+        With a {{ layer.type }} the data will be brought in to a one-dimensional shape.
+    {% elif layer.type == 'Dense Layer' %}
+        This layer is followed by a {{ layer.type }}{% if 'activation' in layer %} with a {{ layer.activation }} activation function{% endif %}.
+    {% endif %}
+{% endfor %}
+
+The last layer is a {{ layers[-1].type }}{% if 'activation' in layers[-1] %} with a {{ layers[-1].activation }} activation function{% endif %}.
