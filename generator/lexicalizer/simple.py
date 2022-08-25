@@ -97,7 +97,7 @@ if __name__ == "__main__":
     conv_onnx = onnx.load('../../test/models/pytorch/saved_models/my_complex_cnn_2.onnx')
     extractor = PyTorchGraphExtractor(conv_onnx)
 
-    selector = Selector(extractor.graph_structure, propert_num=-1)
+    selector = Selector(extractor.graph_structure, property_num=-1)
     selected_graph_summary = selector.select()
 
     text_engine = SimpleLayerLexicalizer(selected_graph_summary)

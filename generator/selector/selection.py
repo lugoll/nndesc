@@ -311,10 +311,10 @@ class Selector(object):
     graph: List[Tuple[str, Dict]] = None
     graph_data: GraphData = None
 
-    def __init__(self, graph: List[Tuple[str, Dict]], propert_num: int = 6):
+    def __init__(self, graph: List[Tuple[str, Dict]], property_num: int = 6):
         super(Selector, self).__init__()
         self.graph = graph
-        self.property_num = propert_num
+        self.property_num = property_num
         structure = [data['type'] for name, data in graph]
         activation_fn = {layer for layer in structure if layer in ACTIVATION_FN}
         conv_size_reduction = [layer['strides'][0] for name, layer in graph if layer['type'] in (CONV, MAXPOOL)]

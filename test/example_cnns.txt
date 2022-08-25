@@ -1,0 +1,48 @@
+My CNN:
+Das Gefaltete Neuronal Netzwerk beginnt mit einer Faltungschicht mit einer Kernelgröße von 3x3 mit 32 Filtern, auf die eine ReLU als Aktivierungsfunktion angewendet wird,
+gefolgt von einer weiteren Faltungsschicht mit der gleichen Kernelgröße sowie 64 Filtern mit einer ReLU als Aktivierungsfunktion.
+Auf Beide Faltungschichten folgt für ein Downsampling jeweils eine MaxPool Schicht.
+Zuletzt folgt eine vollverbunden Schicht mit eine Softmax Aktivierungsfunktion.
+
+My Complex CNN 1:
+Das Gefaltete Neuronale Netzwerk besteht aus mehreren gefalteten Schichten, wobei in jeder Faltungsschicht die Kernelgröße 3x3 verwendet wird.
+Als Aktivierungsfunktion werden wird die Sigmoid und die ReLU Funktion in den versteckten Schichten verwendet und in der Ausgabe Schicht wird eine Softmaxaktivierungsfunktion verwendet,
+welche nach einer einzelnen letzten Dense Layer die Ergebnisse ausgibt.
+Für das downsampling wird in manchen gefalteten Schichten ein Stride von 2 verwendet.
+
+My Complex CNN 2:
+Das gefaltete Neuronale Netzwerk besteht aus 6 Faltungsschichten, bei welchen die Anzahl der Filter in der ersten Hälfte zunimmt und in der zweiten Hälfte wieder abnimmt.
+In jeder Schicht wird eine Kernelgröße von 3x3 verwendet, sowie eine ReLU Aktivierungsfunktion. Für das Downsampling der Daten werden zwei Maxpool Schichten verwendet.
+Nach einer Flachungsschicht, gibt eine Dense Layer mit 10 Ausgabeneuronen und einer Softmax Aktivierungsfunktion das Ergebniss aus.
+
+My Complex CNN 3:
+Das Gefaltete Neuronale Netzwerk enthält mehrere Faltungsschichten, wobei die ersten Schichten eine Kernelgröße von 7x7 aufweisen
+und in den nachfolgenden Schichten ein Kernel von 3x3 verwendet wird.
+Die Anzahl der Filter in den Faltungsschichten nimmt mit zunehmenden Schichten zu. In jeder Schicht wird eine ReLu Aktivierungsfunktion verwendet.
+Für das Downsampling der Daten werden nach einigen Faltungsschichten MaxPool Schichten verwendet
+Nach einer Flachungsschicht am Ende, gibt eine vollverbundene Schicht mit 10 Ausgabeneuronen und einer Softmax Aktivierungsfunktion das Ergebniss aus.
+
+Englisch:
+My CNN:
+The Convolutional Neural Network starts with a convolutional layer with a kernel size of 3x3 with 32 filters to which a ReLU is applied as an activation function,
+followed by another convolutional layer with the same kernel size and 64 filters with a ReLU as activation function.
+Both convolutional layers are followed by a MaxPool layer for downsampling.
+Finally, a fully connected layer with a Softmax activation function follows.
+
+My Complex CNN 1:
+The Convolutional Neural Network consists of several convolutional layers, where in each convolutional layer the kernel size 3x3 is used.
+Sigmoid and ReLU are used as activation function in the hidden layers and a Softmax activation function is used in the output layer,
+which outputs the results after a single last dense layer. For downsampling, a stride of 2 is used in some convolutional layers.
+
+My Complex CNN 2:
+The convolutional neural network consists of six convolutional layers in which the number of filters increases in the first half and decreases in the second half.
+In each layer, a kernel size of 3x3 is used, as well as a ReLU activation function. Two Maxpool layers are used for downsampling the data.
+After a Flatten layer, a dense layer with 10 output neurons and a Softmax activation function gives the result.
+
+My Complex CNN 3:
+The Convolutional Neural Network contains several convolutional layers, where the first layers have a kernel size of 7x7 and in the following layers a kernel of 3x3 is used.
+The number of filters in the convolutional layers increases with increasing layers. A ReLu activation function is used in each layer.
+For downsampling the data, MaxPool layers are used after some convolutional layers.
+After a Flatten layer at the end, a fully connected layer with 10 output neurons and a Softmax activation function gives the result.
+
+Translated with www.DeepL.com/Translator (free version)

@@ -1,6 +1,6 @@
 The {{ pos_word }} layer is a {{ layer.type }}
 {% if layer.type == 'Convolutional Layer' %}
-    with {{ layer.filter }} filters of the size {{ layer.kernel_shape }}{% if 'activation' in layer %} and a {{ layer.activation }} activation function{% endif %}.
+    with {{ layer.filter }} filters of the size {{ layer.kernel_shape }}{% if 'activation' in layer %} and a {{ layer.activation }} activation function{% endif %}{% if 'strides' in layer %} and the stride of {{ layer.strides }}{% endif %}.
 {% elif layer.type == 'MaxPool Layer' %}
     for downsampling.
 {% elif layer.type == 'Dense' %}
