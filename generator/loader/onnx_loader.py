@@ -240,12 +240,16 @@ class KerasGraphExtractor(GraphExtractor):
             # Clean out the None Nodes
             self.graph_structure = [(name, val) for name, val in self.graph_structure if val]
 
+
+
     def parse_conv(self, node):
         assert node.op_type == 'Conv'
+        filters = self._var_dims.get(f'{node.name}/ReadVariableOp:0', [None])[0]
+
         params = {
             'type': 'conv',
             # Extract Filter Size via bias size
-            'filter': self._var_dims[f'{node.name}/ReadVariableOp:0'][0],
+            'filter': filters,
             # Set default for Padding if not in attributes
             'pads': [0, 0, 0, 0]
         }

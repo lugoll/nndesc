@@ -104,8 +104,8 @@ class TemplateEngine(object):
 
 
 if __name__ == '__main__':
-    conv_onnx = onnx.load('../../test/models/pytorch/saved_models/my_complex_cnn_3.onnx')
-    extractor = PyTorchGraphExtractor(conv_onnx)
+    conv_onnx = onnx.load('../../test/models/keras/saved_models/resnet.onnx')
+    extractor = KerasGraphExtractor(conv_onnx)
 
     selector = Selector(extractor.graph_structure)
     selected_graph_summary = selector.select()

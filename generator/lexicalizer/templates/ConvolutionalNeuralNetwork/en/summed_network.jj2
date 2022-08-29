@@ -22,12 +22,14 @@ The Convolutional Neural Network consists of {{ property.LayerNum }} weighted La
 {% if 'only_used' in property.KernelSummary %}
     In all Convolutional Layers a kernel size of {{ property.KernelSummary.only_used }} gets applied to the data.
 {% elif 'several_used' in property.KernelSummary %}
-    In the Convolutional Layers several different kernel sizes like {{ property.KernelSummary.several_used }} are used.
+    In the Convolutional Layers several different kernel sizes like {{ property.KernelSummary.several_used[:-1]|join(', ') }} and {{ property.KernelSummary.several_used[-1] }} are used.
 {% elif 'most_used' in property.KernelSummary %}
     In the Convolutional Layers mostly {{ property.KernelSummary.most_used }} are used.
     Furthermore {{ property.KernelSummary.also_used_count }} layers have a {{ property.KernelSummary.also_used }} kernel.
 {% endif %}
 
+
+{% if 'FilterSummary' in property %}
 {% if 'all' in property.FilterSummary %}
     Through the whole network, the amount of output filters in the Convolutional Layers {{ property.FilterSummary.all }}{% if property.FilterSummary.all != 'are equal' %}s{% endif %}
     {% if property.FilterSummary.all == 'are equal' %}
@@ -40,6 +42,7 @@ The Convolutional Neural Network consists of {{ property.LayerNum }} weighted La
     {% for sec, dir in property.FilterSummary.items() %}
     In the {{ sec }} part they {{ dir }}.
     {% endfor %}
+{% endif %}
 {% endif %}
 
 {% if property.DimensionSummary.maxpool_downsampling and not property.DimensionSummary.conv_downsampling %}

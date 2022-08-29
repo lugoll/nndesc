@@ -2,7 +2,7 @@ import onnx
 
 from generator.loader.onnx_loader import ACTIVATION_FN, CONV, LSTM, GRU, MAXPOOL, DENSE, KerasGraphExtractor
 from pydantic import BaseModel
-from typing import List, Tuple, Dict, Any, Optional
+from typing import List, Tuple, Dict, Any, Optional, Union
 
 # Network Types Constants
 FFN = 'FeedForwardNetwork'
@@ -23,7 +23,7 @@ class GraphData(BaseModel):
     weighted_layer_num: int
     detailed_layers: List[Dict]
     conv_size_reduction: Optional[List[int]] = None
-    conv_filter_amount: Optional[List[int]] = None
+    conv_filter_amount: Optional[List[Union[None, int]]] = None
 
     def get_layer_pairs(self):
         for i in range(len(self.detailed_layers) - 1):
@@ -152,31 +152,32 @@ class Summarizer(object):
         """Aims Conv Layers, give direction about the network, decreasing and increasing number, will be skipped if no CNN"""
         if self._determine_nn_type() == CNN:
             filters = [el for el in dict(self.graph_features)['filter'] if el]
-            direction = {}
-            check_increasing = True
-            check_decreasing = True
-            for p, n in zip(filters[:-1], filters[1:]):
-                if p > n and check_decreasing:
-                    direction[len(direction)+1] = 'decrease'
-                    check_increasing = True
-                    check_decreasing = False
-                elif p < n and check_increasing:
-                    direction[len(direction)+1] = 'increase'
-                    check_increasing = False
-                    check_decreasing = True
+            if len(filters) > 0:
+                direction = {}
+                check_increasing = True
+                check_decreasing = True
+                for p, n in zip(filters[:-1], filters[1:]):
+                    if p > n and check_decreasing:
+                        direction[len(direction)+1] = 'decrease'
+                        check_increasing = True
+                        check_decreasing = False
+                    elif p < n and check_increasing:
+                        direction[len(direction)+1] = 'increase'
+                        check_increasing = False
+                        check_decreasing = True
 
-            if len(direction) == 1:
-                direction = {
-                    'all': direction[1],
-                    'from': filters[0],
-                    'to': filters[-1]
-                }
-            elif len(direction) == 0:
-                direction = {
-                    'all': 'are equal',
-                    'amount': filters[0]
-                }
-            return 'FilterSummary', direction
+                if len(direction) == 1:
+                    direction = {
+                        'all': direction[1],
+                        'from': filters[0],
+                        'to': filters[-1]
+                    }
+                elif len(direction) == 0:
+                    direction = {
+                        'all': 'are equal',
+                        'amount': filters[0]
+                    }
+                return 'FilterSummary', direction
 
     def sum_kernel_shape(self):
         """Aims Conv Layers, mostly used, also used, if just one, then give position"""
@@ -186,7 +187,7 @@ class Summarizer(object):
             kernels_set = set(kernels)
             summary = {}
             if len(set(kernels)) > 2:
-                summary['several_used'] = set(kernels)
+                summary['several_used'] = list(set(kernels))
             elif len(kernels_set) == 2:
                 summary = {
                     'most_used': max(kernels_set, key=kernels.count),
@@ -236,7 +237,7 @@ class Summarizer(object):
         """Aims Conv/Maxpool Layers, mostly used, minus last one"""
         if self._determine_nn_type() == CNN:
             maxpool_strides = {str(2) for l in self.graph.detailed_layers if l['type'] == MAXPOOL}
-            conv_strides = {str(l.get('strides', 1)) for l in self.graph.detailed_layers if l['type'] == CONV and l.get('strides', 1) > 2}
+            conv_strides = {str(l.get('strides', 1)) for l in self.graph.detailed_layers if l['type'] == CONV and l.get('strides', 1) >= 2}
 
             summary = {
                 'maxpool_downsampling': False,
@@ -248,10 +249,10 @@ class Summarizer(object):
             if len(conv_strides) > 0:
                 summary['conv_downsampling'] = True
                 if len(set(conv_strides)) > 1:
-                    c_s_str = ', '.join(str(s) for s in conv_strides[:-1]) + f'and {conv_strides[-1]}'
+                    c_s_str = ', '.join(str(s) for s in conv_strides[:-1]) + f'and {list(conv_strides[-1])}'
                     summary['conv_strides'] = f'the strides {c_s_str} are'
                 else:
-                    summary['conv_strides'] = f'a stride of {conv_strides[0]} is'
+                    summary['conv_strides'] = f'a stride of {list(conv_strides)[0]} is'
             return 'DimensionSummary', summary
 
     def _clean_conv(self, layer_dict: dict) -> dict:
