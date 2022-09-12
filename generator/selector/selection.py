@@ -42,7 +42,7 @@ class GraphSummary(BaseModel):
         return self.length
 
 
-class Summarizer(object):
+class GraphSummarizer(object):
     """
     Summarizes the given graph
     """
@@ -303,7 +303,7 @@ class Summarizer(object):
             return FFN
 
 
-class Selector(object):
+class Summarizer(object):
     """
     Decides which properties are important and calls the summarizer as long as necessary to meet the expectations.
     Decides if layer information should be summarized extensivly based on property_num parameter
@@ -313,7 +313,7 @@ class Selector(object):
     graph_data: GraphData = None
 
     def __init__(self, graph: List[Tuple[str, Dict]], property_num: int = 6):
-        super(Selector, self).__init__()
+        super(Summarizer, self).__init__()
         self.graph = graph
         self.property_num = property_num
         structure = [data['type'] for name, data in graph]
@@ -330,7 +330,7 @@ class Selector(object):
             weighted_layer_num=len([l for l in structure if l in (CONV, DENSE, LSTM, GRU)]),
             detailed_layers=[value for n, value in graph]
         )
-        self.summarizer = Summarizer(self.graph_data, self)
+        self.summarizer = GraphSummarizer(self.graph_data, self)
 
     def select(self):
         # Call Summarizer until expectations are met
@@ -342,14 +342,19 @@ class Selector(object):
         return summary
 
 
+class Selector(Summarizer):
+    """Class for backwards compatibility"""
+    pass
+
+
 if __name__ == '__main__':
     conv_onnx = onnx.load('../../test/models/keras/saved_models/vgg16.onnx')
 
     extractor = KerasGraphExtractor(conv_onnx)
 
-    selector = Selector(extractor.graph_structure, propert_num=-1)
+    summarizer = Summarizer(extractor.graph_structure, propert_num=-1)
 
-    result = selector.select()
+    result = summarizer.select()
 
     print(result)
     print(len(result))
